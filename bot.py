@@ -131,11 +131,18 @@ async def check_membership(user_id, context):
         return False
 
 
-async def require_channel(update, context):
-    if await check_membership(
-        update.effective_user.id, context
-    ):
-        return True
+async def is_member(context, user_id):
+    try:
+        member = await context.bot.get_chat_member(
+            chat_id="@ecochamber",
+            user_id=user_id
+        )
+
+        return member.status in ("member", "administrator", "creator")
+
+    except Exception as e:
+        print(f"Membership check failed: {e}")
+        return False
 
     keyboard = []
 
