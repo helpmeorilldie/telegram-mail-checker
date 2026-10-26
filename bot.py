@@ -110,31 +110,12 @@ def is_valid_email(email):
 
 # ================= CHANNEL VERIFICATION =================
 
-async def check_membership(user_id, context):
-    if not REQUIRED_CHANNEL:
-        return True
-
-    try:
-        member = await context.bot.get_chat_member(
-            REQUIRED_CHANNEL,
-            user_id
-        )
-
-        return member.status in (
-            ChatMemberStatus.MEMBER,
-            ChatMemberStatus.ADMINISTRATOR,
-            ChatMemberStatus.OWNER,
-        )
-
-    except Exception:
-        log.exception("Membership verification failed")
-        return False
-
+GROUP_ID = -1003307290712  # Replace with your actual group ID
 
 async def is_member(context, user_id):
     try:
         member = await context.bot.get_chat_member(
-            chat_id="@ecochamber",
+            chat_id=GROUP_ID,
             user_id=user_id
         )
 
@@ -143,6 +124,8 @@ async def is_member(context, user_id):
     except Exception as e:
         print(f"Membership check failed: {e}")
         return False
+
+ 
 
     keyboard = []
 
